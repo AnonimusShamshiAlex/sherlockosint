@@ -27,14 +27,14 @@ def search_instagram(username):
     else:
         print("❌ Профиль не найден в Instagram.")
 
-def search_tiktok(username):
-    print(f"\n🔍 Поиск в TikTok: {username}")
-    url = f"https://www.tiktok.com/@{username}"
+def search_facebook(username):
+    print(f"\n🔍 Поиск в Facebook: {username}")
+    url = f"https://www.facebook.com/{username}"
     response = requests.get(url)
     if response.status_code == 200:
         print(f"✅ Профиль найден: {url}")
     else:
-        print("❌ Профиль не найден в TikTok.")
+        print("❌ Профиль не найден в Facebook.")
 
 def search_youtube(query):
     print(f"\n🔍 Поиск в YouTube: {query}")
@@ -53,10 +53,20 @@ def search_youtube(query):
     else:
         print("Ошибка при поиске в YouTube.")
 
+def search_snapchat(username):
+    print(f"\n🔍 Поиск в Snapchat: {username}")
+    url = f"https://www.snapchat.com/add/{username}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        print(f"✅ Профиль найден: {url}")
+    else:
+        print("❌ Профиль не найден в Snapchat.")
+
 if __name__ == "__main__":
     print("=== OSINT Tool ===")
     query = input("Введите ник или имя для поиска: ").strip()
     search_google(query)
     search_instagram(query)
-    search_tiktok(query)
+    search_facebook(query)
     search_youtube(query)
+    search_snapchat(query)
