@@ -62,6 +62,33 @@ def search_snapchat(username):
     else:
         print("❌ Профиль не найден в Snapchat.")
 
+def search_reddit(username):
+    print(f"\n🔍 Поиск в Reddit: {username}")
+    url = f"https://www.reddit.com/user/{username}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        print(f"✅ Профиль найден: {url}")
+    else:
+        print("❌ Профиль не найден в Reddit.")
+
+def search_linkedin(username):
+    print(f"\n🔍 Поиск в LinkedIn: {username}")
+    url = f"https://www.linkedin.com/in/{username}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        print(f"✅ Профиль найден: {url}")
+    else:
+        print("❌ Профиль не найден в LinkedIn.")
+
+def search_pinterest(username):
+    print(f"\n🔍 Поиск в Pinterest: {username}")
+    url = f"https://www.pinterest.com/{username}/"
+    response = requests.get(url)
+    if response.status_code == 200:
+        print(f"✅ Профиль найден: {url}")
+    else:
+        print("❌ Профиль не найден в Pinterest.")
+
 if __name__ == "__main__":
     print("=== OSINT Tool ===")
     query = input("Введите ник или имя для поиска: ").strip()
@@ -70,3 +97,6 @@ if __name__ == "__main__":
     search_facebook(query)
     search_youtube(query)
     search_snapchat(query)
+    search_reddit(query)
+    search_linkedin(query)
+    search_pinterest(query)
