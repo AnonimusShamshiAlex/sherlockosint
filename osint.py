@@ -1,102 +1,70 @@
 import requests
-from bs4 import BeautifulSoup
 
-def search_google(query):
-    print(f"\n🔍 Поиск в Google: {query}")
-    url = f"https://www.google.com/search?q={query}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        results = soup.find_all('h3')
-        if results:
-            print("Результаты Google:")
-            for result in results[:5]:  # Показываем первые 5 результатов
-                print(f"- {result.text}")
+def search_platform(username, platform_name, url_template):
+    print(f"\n🔍 Поиск в {platform_name}: {username}")
+    url = url_template.format(username=username)
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            print(f"✅ Профиль найден: {url}")
         else:
-            print("Нет результатов в Google.")
-    else:
-        print("Ошибка при поиске в Google.")
-
-def search_instagram(username):
-    print(f"\n🔍 Поиск в Instagram: {username}")
-    url = f"https://www.instagram.com/{username}/"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в Instagram.")
-
-def search_facebook(username):
-    print(f"\n🔍 Поиск в Facebook: {username}")
-    url = f"https://www.facebook.com/{username}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в Facebook.")
-
-def search_youtube(query):
-    print(f"\n🔍 Поиск в YouTube: {query}")
-    url = f"https://www.youtube.com/results?search_query={query}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        results = soup.find_all('a', {'id': 'video-title'})
-        if results:
-            print("Результаты YouTube:")
-            for result in results[:5]:  # Показываем первые 5 результатов
-                print(f"- {result.text.strip()}")
-        else:
-            print("Нет результатов в YouTube.")
-    else:
-        print("Ошибка при поиске в YouTube.")
-
-def search_snapchat(username):
-    print(f"\n🔍 Поиск в Snapchat: {username}")
-    url = f"https://www.snapchat.com/add/{username}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в Snapchat.")
-
-def search_reddit(username):
-    print(f"\n🔍 Поиск в Reddit: {username}")
-    url = f"https://www.reddit.com/user/{username}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в Reddit.")
-
-def search_linkedin(username):
-    print(f"\n🔍 Поиск в LinkedIn: {username}")
-    url = f"https://www.linkedin.com/in/{username}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в LinkedIn.")
-
-def search_pinterest(username):
-    print(f"\n🔍 Поиск в Pinterest: {username}")
-    url = f"https://www.pinterest.com/{username}/"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"✅ Профиль найден: {url}")
-    else:
-        print("❌ Профиль не найден в Pinterest.")
+            print(f"❌ Профиль не найден в {platform_name}.")
+    except Exception as e:
+        print(f"⚠️ Ошибка при поиске в {platform_name}: {e}")
 
 if __name__ == "__main__":
     print("=== OSINT Tool ===")
-    query = input("Введите ник или имя для поиска: ").strip()
-    search_google(query)
-    search_instagram(query)
-    search_facebook(query)
-    search_youtube(query)
-    search_snapchat(query)
-    search_reddit(query)
-    search_linkedin(query)
-    search_pinterest(query)
+    username = input("Введите ник или имя для поиска: ").strip()
+
+    # Список платформ и шаблонов URL
+    platforms = [
+        ("Facebook", "https://www.facebook.com/{username}"),
+        ("YouTube", "https://www.youtube.com/results?search_query={username}"),
+        ("Instagram", "https://www.instagram.com/{username}/"),
+        ("WhatsApp", "https://wa.me/{username}"),
+        ("WeChat", "https://www.wechat.com/{username}"),
+        ("Messenger", "https://www.messenger.com/t/{username}"),
+        ("Telegram", "https://t.me/{username}"),
+        ("Snapchat", "https://www.snapchat.com/add/{username}"),
+        ("Pinterest", "https://www.pinterest.com/{username}/"),
+        ("Twitter (X)", "https://x.com/{username}"),
+        ("LinkedIn", "https://www.linkedin.com/in/{username}"),
+        ("Reddit", "https://www.reddit.com/user/{username}"),
+        ("Quora", "https://www.quora.com/profile/{username}"),
+        ("Discord", "https://discord.com/users/{username}"),
+        ("Viber", "https://www.viber.com/{username}"),
+        ("Line", "https://line.me/{username}"),
+        ("KakaoTalk", "https://www.kakaocorp.com/service/KakaoTalk/{username}"),
+        ("Weibo", "https://weibo.com/{username}"),
+        ("Tumblr", "https://{username}.tumblr.com"),
+        ("Clubhouse", "https://www.clubhouse.com/@{username}"),
+        ("Twitch", "https://www.twitch.tv/{username}"),
+        ("Vimeo", "https://vimeo.com/{username}"),
+        ("Dailymotion", "https://www.dailymotion.com/{username}"),
+        ("Bilibili", "https://space.bilibili.com/{username}"),
+        ("Likee", "https://likee.video/@{username}"),
+        ("Tinder", "https://tinder.com/@{username}"),
+        ("Bumble", "https://bumble.com/{username}"),
+        ("Hinge", "https://hinge.co/{username}"),
+        ("OkCupid", "https://www.okcupid.com/profile/{username}"),
+        ("Grindr", "https://www.grindr.com/{username}"),
+        ("Spotify", "https://open.spotify.com/user/{username}"),
+        ("SoundCloud", "https://soundcloud.com/{username}"),
+        ("Bandcamp", "https://{username}.bandcamp.com"),
+        ("Behance", "https://www.behance.net/{username}"),
+        ("Dribbble", "https://dribbble.com/{username}"),
+        ("GitHub", "https://github.com/{username}"),
+        ("VK (ВКонтакте)", "https://vk.com/{username}"),
+        ("Odnoklassniki", "https://ok.ru/{username}"),
+        ("Xing", "https://www.xing.com/profile/{username}"),
+        ("Zalo", "https://zalo.me/{username}"),
+        ("Flickr", "https://www.flickr.com/people/{username}/"),
+        ("Meetup", "https://www.meetup.com/members/{username}/"),
+        ("Nextdoor", "https://nextdoor.com/profile/{username}"),
+        ("Goodreads", "https://www.goodreads.com/{username}"),
+        ("Strava", "https://www.strava.com/athletes/{username}")
+    ]
+
+    # Поиск на всех платформах
+    for platform_name, url_template in platforms:
+        search_platform(username, platform_name, url_template)
